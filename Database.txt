@@ -1,0 +1,221 @@
+/*database account
+host: 164.111.161.173
+port: 5432
+account name: team1
+password: C123456d
+database: Team1
+*/
+
+CREATE TABLE Rooms (
+  Id INT NOT NULL PRIMARY KEY,
+  Name VARCHAR (100),
+  room_attribute VARCHAR(100)
+);
+
+CREATE TABLE Devices(
+  id INT NOT NULL PRIMARY KEY,
+  Name VARCHAR (100),
+  Type VARCHAR (50),
+  Room_id INT,
+  sensor_status BOOLEAN
+);
+
+CREATE TABLE Temp_Data(
+    device_id INT NOT NULL PRIMARY KEY,
+    use_date DATE,
+    start_Time TIME,
+    end_time TIME
+);
+
+CREATE TABLE Water_Data(
+    device_id INT NOT NULL PRIMARY KEY,
+    use_date DATE,
+    start_Time TIME,
+    end_time TIME,
+    total_gallons INT
+);
+
+CREATE TABLE Electric_Data(
+  device_id INT NOT NULL PRIMARY KEY,
+  use_date DATE,
+  start_Time TIME,
+  end_time TIME,
+  total_watts INT
+);
+
+CREATE TABLE History(
+    monthly_data TEXT [],
+    day_data  TEXT []
+);
+
+#example query
+SELECT
+
+FROM
+
+WHERE
+  ;
+
+
+CREATE FUNCTION trigger_function()
+    RETURNS trigger AS
+CREATE TRIGGER trigger_name
+{BEFORE | AFTER | INSTEAD OF} {event [OR ...]}
+    ON table_name
+    [FOR [EACH] {ROW | STATEMENT}]
+        EXECUTE PROCEDURE trigger_function
+
+
+#example trigger
+CREATE OR REPLACE FUNCTION log_last_name_changes()
+  RETURNS trigger AS
+  $BODY$
+  BEGIN
+    IF NEW.last_name <> OLD.last_name THEN
+         INSERT INTO employee_audits(employee_id,last_name,changed_on)
+         VALUES(OLD.id,OLD.last_name,now());
+    END IF;
+
+    RETURN NEW;
+END;
+$BODY$
+CREATE TRIGGER last_name_changes
+  BEFORE UPDATE
+  ON employees
+  FOR EACH ROW
+  EXECUTE PROCEDURE log_last_name_changes();
+
+#trigger descriptions
+/*Light Bulb Trigger:
+	1)light is turned on, trigger updates on electric_data and starts timer.
+    	2)light is turned off, trigger updates on electric_data and stops timer.
+    	3)timer length is stored in electric_data.
+*/
+
+/*Window Trigger:
+	1)window opens, trigger turns on the A/C or Heater, updates on temp_data and electric_data
+		and starts timer for temp_data and electric_data.
+	2)window closes, trigger turns off the A/C or Heater, updates on temp_data and electric_data
+		and stops timer for temp_data and electric_data.
+	3)electric timer length to be stored in electric_data
+		and temp timer length to be stored in temp_data.
+*/
+
+/*Bathroom Fan Trigger:
+	1)fan is turned on, trigger updates electric_data and starts timer.
+    	2)fan is turned off, trigger updates electric_data and stops timer.
+    	3)timer length is stored in electric_data.
+*/
+
+/*HVAC Trigger:
+	1)trigger turns on the A/C or Heater updates temp_data table and starts timer,
+		also updates electric_data and starts timer.
+	2)trigger turns off the A/C or Heater updates temp_data table and stops timer,
+		also updates electric_data and stops timer.
+	3)trigger temp_data timer length to be stored in temp_data, and electric_data timer length
+		to be stored in electric_data table.
+*/
+
+/*Refrigerator:
+	1)constant update to electric_data?
+*/
+
+/*Hot Water Heater Trigger:
+    * 16.5 gal per shower, 19.5 gal per bath, 6 gal per dishwahser , 17 gal per wash "hardcoded"
+    * if statment asking what device is being used.
+    * (gal of device X 4 min/gal)/60 min X 4500W/hr) = watt used 
+	1)Water running, trigger update on water_data table and start timer.
+	2)water stops running, trigger update on water_data table and stop timer.
+	3)water_data timer length stored in water_data table.
+	4)Water Heater turns, trigger updates on electric_data and starts timer.
+	5)Water Heater turns off, trigger updates on electric_data and stops timer.
+    	6)timer length is stored in electric_data.
+*/
+
+/*Stove Trigger:
+	1)Eye gets turned on, trigger updates the electric_data table and starts timer.
+	2)Eye gets turned off, trigger updates the electric_data table and stops timer.
+	3)timer length is tored in electric_data.
+*/
+
+/*Oven Trigger:
+	1)Oven turns on, trigger updates the electric_data table and starts timer.
+	2)Oven turns off, trigger updates the electric_data table and stops timer.
+	3)timer length is stored in electric_data.
+*/
+
+/*TV Trigger:
+	1)TV turns on, trigger updates the electric_data table and starts timer.
+	2)TV turns off, trigger updates the electric_data table and stops timer.
+	3)timer length is stored in electric_data.
+*/
+
+/*Thermostat Trigger:
+
+*/
+
+/*Bath Trigger:
+	1)Water starts running, trigger updates the water_data table and starts timer.
+	2)Water stops running, trigger updates the water_data table and stops timer.
+	3)timer length is stored in water_data table.
+*/
+
+/*Dishwasher Trigger:
+	1)washer turns on, trigger updates the electric_data table and starts timer.
+	2)water starts running, trigger updates the water_data table and starts timer.
+	3)water stops running, trigger updates the water_data table and stops timer.
+	4)washer turns off, trigger updates the electric_data table and stops timer.
+	5)water timer length is stored in water_data table.
+	6)washer timer length is stored in electric_data table.
+*/
+
+/*Washing Machine Trigger:
+	1)washer turns on, trigger updates the electric_data table and starts timer.
+	2)water starts running, trigger updates the water_data table and starts timer.
+	3)water stops running, trigger updates the water_data table and stops timer.
+	4)washer turns off, trigger updates the electric_data table and stops timer.
+	5)water timer length is stored in water_data table.
+	6)washer timer length is stored in electric_data table.
+*/
+
+/*Clothes Dryer Trigger:
+	1)dryer turns on, trigger updates the electric_data table and starts timer.
+	2)dryer turns off, trigger updates the electric_data table and stops timer.
+	3)timer length is stored in electric_data table.
+*/
+
+/*Sink Trigger:
+	1)Water starts running, trigger updates the water_data table and starts timer.
+	2)Water stops running, trigger updates the water_data table and stops timer.
+	3)timer length is stored in water_data table.
+*/
+
+/*Door Trigger:
+	1)door opens, trigger turns on the A/C or Heater, updates on temp_data and electric_data
+		and starts timer for temp_data and electric_data.
+	2)door closes, trigger turns off the A/C or Heater , updates on temp_data and electric_data
+		and stopes timer for temp_data and electric_data.
+	3)electric timer length to be stored in electric_data
+		and temp timer length to be stored in temp_data.
+*/
+
+/*Ceiling Fan Trigger:
+	1)fan is turned on, trigger updates the electric_data table and starts timer.
+	2)fan is turned off, trigger updates the electric_data table and stops timer.
+	3)timer length is stored in electric_data table.
+*/
+
+/*Water_data Trigger:
+	1)trigger sends data to history.
+	2)history updates month costs.
+*/
+
+/*Electric_data Trigger:
+	1)trigger sends data to history.
+	2)history updates month costs.
+*/
+
+/*Temp_data Trigger:
+	1)trigger sends data to history.
+	2)history updates month costs.
+*/
